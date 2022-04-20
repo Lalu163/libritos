@@ -2,6 +2,7 @@ package laura.portfolio.libritos;
 
 import laura.portfolio.libritos.repositories.Book;
 import laura.portfolio.libritos.repositories.BookRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +19,11 @@ public class ApplicationTests {
 
     @Autowired
     MockMvc mockMvc;
+
+    @BeforeEach
+    void setUp() {
+        bookRepository.deleteAll();
+    }
 
     @Test
     void loadsTheHomePage() throws Exception {
