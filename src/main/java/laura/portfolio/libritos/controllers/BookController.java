@@ -33,7 +33,8 @@ public class BookController {
     String getForm(Model model){
         Book book = new Book();
         model.addAttribute("book",book);
-        return "/books/new";
+        model.addAttribute("title", "Create new book");
+        return "/books/edit";
     }
 
     @PostMapping("/books/new")

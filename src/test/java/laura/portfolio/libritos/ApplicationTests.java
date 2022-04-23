@@ -35,6 +35,7 @@ public class ApplicationTests {
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"));
     }
+
     @Autowired
     BookRepository bookRepository;
 
@@ -53,19 +54,22 @@ public class ApplicationTests {
     void returnsAFormToAddNewBooks() throws Exception {
         mockMvc.perform(get("/books/new"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/books/new"));
+                .andExpect(view().name("/books/edit"))
+                .andExpect(model().attributeExists("book"))
+                .andExpect(model().attribute("title", "Create new book"));
+
     }
 
     @Test
-    void allowsToCreateANewBook() throws Exception{
+    void allowsToCreateANewBook() throws Exception {
         mockMvc.perform(post("/books/new")
-                .param("title","Harry Potter and the Philosopher's Stone")
-                .param("author", "J.K. Rowling")
-                .param("category", "fantasy")
-        )
+                        .param("title", "Harry Potter and the Philosopher's Stone")
+                        .param("author", "J.K. Rowling")
+                        .param("category", "fantasy")
+                )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/books"))
-                ;
+        ;
         List<Book> existingBooks = (List<Book>) bookRepository.findAll();
         assertThat(existingBooks, contains(allOf(
                 hasProperty("title", equalTo("Harry Potter and the Philosopher's Stone")),
