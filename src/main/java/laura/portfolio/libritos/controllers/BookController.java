@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -38,11 +39,18 @@ public class BookController {
     }
 
     @GetMapping("/books/edit/{id}")
-    String editBook(Model model){
-        Book book = new Book();
+    String editBook(Model model, @PathVariable Long id){
+        Book book = bookRepository.findById(id).get();
         model.addAttribute("book",book);
         model.addAttribute("title", "Edit book");
-        return "/books/edit";
+        return "books/edit";
+    }
+
+    @GetMapping("/books/delete/{id}")
+    String removeBook(@PathVariable Long id){
+        bookRepository.findById(id);
+        bookRepository.deleteById(id);
+        return "redirect:/books";
     }
 
     @PostMapping("/books/new")
@@ -50,4 +58,6 @@ public class BookController {
         bookRepository.save(book);
         return "redirect:/books";
     }
+
+
 }
