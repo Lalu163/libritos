@@ -30,10 +30,18 @@ public class BookController {
     }
 
     @GetMapping("/books/new")
-    String getForm(Model model){
+    String newBook(Model model){
         Book book = new Book();
         model.addAttribute("book",book);
         model.addAttribute("title", "Create new book");
+        return "/books/edit";
+    }
+
+    @GetMapping("/books/edit/{id}")
+    String editBook(Model model){
+        Book book = new Book();
+        model.addAttribute("book",book);
+        model.addAttribute("title", "Edit book");
         return "/books/edit";
     }
 

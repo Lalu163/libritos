@@ -77,4 +77,14 @@ public class ApplicationTests {
                 hasProperty("category", equalTo("fantasy"))
         )));
     }
+
+    @Test
+    void returnsAFormToEditBooks() throws Exception {
+        Book book = bookRepository.save(new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", "fantasy"));
+        mockMvc.perform(get("/books/edit/" + book.getId()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("books/edit"))
+                .andExpect(model().attribute("book", book))
+                .andExpect(model().attribute("title", "Edit book"));
+    }
 }
